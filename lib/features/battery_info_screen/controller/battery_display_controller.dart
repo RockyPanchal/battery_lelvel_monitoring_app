@@ -81,6 +81,7 @@ class BatterDisplayController{
       var list = jsonDecode(data as String);
       var dataList = (list as List).map<BatteryInfoModel>((json) => BatteryInfoModel.fromJson(json)).toList();
       tempDataList.addAll(dataList);
+      tempDataList = tempDataList.reversed.toList();
     }
 
     _batteryDataListController.sink.add(tempDataList);
