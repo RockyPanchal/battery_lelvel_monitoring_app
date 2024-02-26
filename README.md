@@ -27,7 +27,7 @@ Orange color- if battery is in power saver mode, no matter percentage level
 
 Red color- battery less or equal to 20%
 
-Green color – battery greater ten 20%
+Green color – battery greater then 20%
 
 Battery charging indicating icon: if battery is charging shows charging indicating icon on battery view
 Important: when battery is full charged and connected to power, It will not show charging indicating icon as battery is not storing energy and we will not getting charging status from device
