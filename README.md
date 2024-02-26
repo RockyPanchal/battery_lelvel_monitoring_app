@@ -51,3 +51,5 @@ Known issue:
 2.iOS Background fetch is not working (working to find way if possible to implement)
 But in order to test you can simulate a background fetch in Xcode; go to Debug → Simulate Background Fetch
 
+3.Debug notifications shows on screen 
+   open issue in work manager: https://github.com/fluttercommunity/flutter_workmanager/issues/439
