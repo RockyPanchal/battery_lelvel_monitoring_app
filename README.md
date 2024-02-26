@@ -29,7 +29,8 @@ Red color- battery less or equal to 20%
 
 Green color – battery greater ten 20%
 
-Battery charging indicating icon: if battery is charing shows charging indicating icon on battery view
+Battery charging indicating icon: if battery is charging shows charging indicating icon on battery view
+Important: when battery is full charged and connected to power, It will not show charging indicating icon as battery is not storing energy and we will not getting charging status from device
 
 Details(info) Icon: It will redirect to battery data level history list.
 
