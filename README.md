@@ -41,7 +41,12 @@ This screen will show battery level with date and time in list every 15 minutes
 Important:
 -Android: for background fetch you need to allow app to run in background(add app in never sleep apps) and allow background fetch in battery settings   
 
+
 Known issue:
+
 1.iOS battery level: iOS 17 and above battery level shows increment of 5 level(percentage) , else below ios 17 works perfectly: 
    references: https://forums.developer.apple.com/forums/thread/732903
+
 2.iOS Background fetch is not working (working to find way if possible to implement)
+But in order to test you can simulate a background fetch in Xcode; go to Debug → Simulate Background Fetch
+

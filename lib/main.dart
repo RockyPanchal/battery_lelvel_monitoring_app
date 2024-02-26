@@ -127,6 +127,14 @@ void callbackDispatcher() {
 
         String dataString = jsonEncode(tempDataList);
         prefs.setString(batterInfoData, dataString);
+
+        //to send data main thread
+        final sendPort = IsolateNameServer.lookupPortByName(backgroundTaskName);
+        if (sendPort != null) {
+          // The port might be null if the main isolate is not running.
+          sendPort.send(dataString);
+        }
+
         break;
     }
 
