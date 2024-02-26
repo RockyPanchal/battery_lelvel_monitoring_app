@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:isolate';
+import 'dart:ui';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,14 +18,22 @@ void main() {
 
 initSetup() async {
 
-  ///work manager intialize and register task
-  Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
-  Workmanager().registerPeriodicTask(
-    backgroundTaskName,
-    backgroundTaskName,
-    frequency: const Duration(minutes: 15),
-    initialDelay: const Duration(minutes: 15),
-  );
+  ///work manager initialize and register task
+  try{
+    Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+
+    ///android only as ios does not support this for now
+    if(Platform.isAndroid){
+      Workmanager().registerPeriodicTask(
+        backgroundTaskName,
+        backgroundTaskName,
+        frequency: const Duration(minutes: 15),
+        initialDelay: const Duration(minutes: 15),
+      );
+    }
+  }catch(e){
+    printLog("workmanager Exception ${e.toString()}");
+  }
 
  ///store initial battery data to local db
   var prefs = await SharedPreferences.getInstance();
@@ -31,8 +42,18 @@ initSetup() async {
     backgroundDataStore();
   }
 
-}
+  //set received data in main tread
+  try{
+    var port = ReceivePort();
+    IsolateNameServer.registerPortWithName(port.sendPort, backgroundTaskName);
+    port.listen((dynamic data) async {
+      prefs.setString(batterInfoData, data);
+    });
+  }catch(e){
+    printLog("error while update data to main thread ${e.toString()}");
+  }
 
+}
 
 ///background task name
 const backgroundTaskName = "com.example.batteryLevelMonitoringApp.battery_data_fetch";
@@ -41,6 +62,8 @@ const backgroundTaskName = "com.example.batteryLevelMonitoringApp.battery_data_f
 const String batterInfoData = "battery_data";
 const String initialDataEntry = "initial_data_entry";
 
+
+///call back for background function
 @pragma(
     'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
 void callbackDispatcher() {
@@ -70,6 +93,14 @@ void callbackDispatcher() {
 
         String dataString = jsonEncode(tempDataList);
         prefs.setString(batterInfoData, dataString);
+
+        //to send data main thread
+        final sendPort = IsolateNameServer.lookupPortByName(backgroundTaskName);
+        if (sendPort != null) {
+          // The port might be null if the main isolate is not running.
+          sendPort.send(dataString);
+        }
+
         break;
 
       case Workmanager.iOSBackgroundTask:

@@ -6,7 +6,6 @@ import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cron/cron.dart';
 
 void printLog(Object? object) {
   if (kDebugMode) {
@@ -29,8 +28,6 @@ class BatterDisplayController{
   static Stream <List<BatteryInfoModel>> get batteryDataListStream => _batteryDataListController.stream;
 
   static final _battery = Battery();
-
-  static final cron = Cron();
 
   /// method to know the state of the battery
   static void getBatteryState() {
@@ -55,9 +52,10 @@ class BatterDisplayController{
   }
 
 
-  ///cron job for iOS background task
+  ///for iOS foreground update
   static setDataEvery15Min(){
-    cron.schedule(Schedule.parse('*/15 * * * *'), () async {
+    //storeDataToDb();
+    Timer.periodic(const Duration(minutes: 15), (timer) {
       try{
         storeDataToDb();
       }catch(e){
@@ -74,7 +72,6 @@ class BatterDisplayController{
 
   /// method to get initial battery level history list
   static getInitialList()async{
-
     var prefs = await SharedPreferences.getInstance();
     var data = prefs.get(batterInfoData);
 
@@ -105,9 +102,9 @@ class BatterDisplayController{
     }
 
     String currentTimeDate = getTimeDate();
-    //int batteryLevel = await Battery().batteryLevel;
+    int batteryLevel = await Battery().batteryLevel;
 
-    BatteryInfoModel batteryInfoData = BatteryInfoModel(dateTime: currentTimeDate, batteryPercentage: 10);
+    BatteryInfoModel batteryInfoData = BatteryInfoModel(dateTime: currentTimeDate, batteryPercentage: batteryLevel);
     tempDataList.add(batteryInfoData);
 
     String dataString = jsonEncode(tempDataList);

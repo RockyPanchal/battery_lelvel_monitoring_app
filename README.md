@@ -2,10 +2,11 @@
 
 A new Flutter project to display and store battery level data and display in list
 
-
 Flutter version used: 3.16.5
 
 Architecture pattern used: MVC (as no need other architecture)
+
+Background task package : WorkManager 
 
 State Management: Stream Controller (As no need of other bloc, provide, Getx etc) as there are less data update manage. So no need of other package, use basic dart provided stream controller
 
@@ -37,9 +38,10 @@ Details(info) Icon: It will redirect to battery data level history list.
 
 This screen will show battery level with date and time in list every 15 minutes
 
+Important:
+-Android: for background fetch you need to allow app to run in background(add app in never sleep apps) and allow background fetch in battery settings   
 
 Known issue:
-1.iOS battery level: iOS 17 and above battery level shows increment of 5 level , else works perfectly: 
+1.iOS battery level: iOS 17 and above battery level shows increment of 5 level(percentage) , else below ios 17 works perfectly: 
    references: https://forums.developer.apple.com/forums/thread/732903
-2.iOS Background fetch is not working (working on this part)
-2.Android: Data update in forground/background app : Battery data history list is not updating while app is in background and frgorund , it will update when you close and open app again OR App is killed (working on this part)
+2.iOS Background fetch is not working (working to find way if possible to implement)

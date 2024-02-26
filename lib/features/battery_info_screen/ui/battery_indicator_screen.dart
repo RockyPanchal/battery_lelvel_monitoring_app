@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:batter_level_monitoring_app/features/battery_info_screen/ui/battery_level_history_screen.dart';
 import 'package:batter_level_monitoring_app/resources/strings.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +32,11 @@ class _BatteryIndicatorScreenState extends State<BatteryIndicatorScreen> {
 
     // calling the method to get battery status
     BatterDisplayController.getBatteryState();
+
+    //iOS only(to set data in foreground)
+    if(Platform.isIOS){
+      BatterDisplayController.setDataEvery15Min();
+    }
   }
 
   @override
