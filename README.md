@@ -41,7 +41,7 @@ This screen will show battery level with date and time in list every 15 minutes
 
 Important:
 -Android: for background fetch you need to allow app to run in background(add app in never sleep apps) and allow background fetch in battery settings   
-
+-Background fetch time will not accurate all time as per work manager document (Periodic tasks : runs indefinitely on a regular basis)
 
 Known issue:
 
