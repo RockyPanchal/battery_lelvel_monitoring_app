@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:batter_level_monitoring_app/data/shared_preferences/shared_preference_controller.dart';
 import 'package:batter_level_monitoring_app/features/battery_info_screen/model/battery_info_model.dart';
 import 'package:batter_level_monitoring_app/main.dart';
 import 'package:battery_plus/battery_plus.dart';
@@ -55,9 +56,10 @@ class BatterDisplayController{
   ///for iOS foreground update
   static setDataEvery15Min(){
     //storeDataToDb();
-    Timer.periodic(const Duration(minutes: 15), (timer) {
+    Timer.periodic(const Duration(minutes: 15), (timer) async{
       try{
-        storeDataToDb();
+       var dataList = await storeDataToDb();
+       _batteryDataListController.sink.add(dataList);
       }catch(e){
         printLog("error while storing issue${e.toString()}");
       }
@@ -72,8 +74,10 @@ class BatterDisplayController{
 
   /// method to get initial battery level history list
   static getInitialList()async{
-    var prefs = await SharedPreferences.getInstance();
-    var data = prefs.get(batterInfoData);
+    //var prefs = await SharedPreferences.getInstance();
+   // var data = prefs.get(batterInfoData);
+
+    var data = await SharedPreferencesController.getDataFromKey(dataKey: SharedPreferencesController.batterInfoData);
 
     List<BatteryInfoModel> tempDataList = [];
 
@@ -87,12 +91,10 @@ class BatterDisplayController{
     _batteryDataListController.sink.add(tempDataList);
   }
 
-  /// method created to store data in db at every 15 min
-  static void storeDataToDb() async {
+  /// method created to store data in db
+  static Future<List<BatteryInfoModel>> storeDataToDb() async {
 
-    var prefs = await SharedPreferences.getInstance();
-
-    var data = prefs.get(batterInfoData);
+    var data = await SharedPreferencesController.getDataFromKey(dataKey: SharedPreferencesController.batterInfoData);
 
     List<BatteryInfoModel> tempDataList = [];
 
@@ -103,16 +105,16 @@ class BatterDisplayController{
     }
 
     String currentTimeDate = getTimeDate();
+
     int batteryLevel = await Battery().batteryLevel;
 
     BatteryInfoModel batteryInfoData = BatteryInfoModel(dateTime: currentTimeDate, batteryPercentage: batteryLevel);
     tempDataList.add(batteryInfoData);
 
     String dataString = jsonEncode(tempDataList);
-    prefs.setString(batterInfoData, dataString);
 
-    _batteryDataListController.sink.add(tempDataList);
-
+    await SharedPreferencesController.setStringData(dataKey: SharedPreferencesController.batterInfoData,dataValue: dataString);
+    return tempDataList;
   }
 
   static String getTimeDate(){
