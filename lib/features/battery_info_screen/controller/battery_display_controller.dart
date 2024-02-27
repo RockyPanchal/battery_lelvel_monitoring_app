@@ -114,6 +114,13 @@ class BatterDisplayController{
     String dataString = jsonEncode(tempDataList);
 
     await SharedPreferencesController.setStringData(dataKey: SharedPreferencesController.batterInfoData,dataValue: dataString);
+
+
+    var isInitialDataSaved = await SharedPreferencesController.getDataFromKey(dataKey: SharedPreferencesController.initialDataEntry);
+    if(isInitialDataSaved != true){
+      await SharedPreferencesController.setBoolData(dataKey: SharedPreferencesController.initialDataEntry,dataValue: true);
+    }
+
     return tempDataList;
   }
 
