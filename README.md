@@ -42,6 +42,7 @@ This screen will show battery level with date and time in list every 15 minutes
 Important:
 -Android: for background fetch you need to allow app to run in background(add app in never sleep apps) and allow background fetch in battery settings   
 -Background fetch time will not accurate all time as per work manager document (Periodic tasks : runs indefinitely on a regular basis)
+-Debug notifications shows on screen for testing purpose, can be disable with  isInDebugMode value to false, while init workmanager 
 
 Known issue:
 
@@ -51,5 +52,3 @@ Known issue:
 2.iOS Background fetch is not working (working to find way if possible to implement)
 But in order to test you can simulate a background fetch in Xcode; go to Debug → Simulate Background Fetch
 
-3.Debug notifications shows on screen 
-   open issue in work manager: https://github.com/fluttercommunity/flutter_workmanager/issues/439
