@@ -119,12 +119,17 @@ class _BatteryIndicatorScreenState extends State<BatteryIndicatorScreen> {
 
   // Custom widget to add different states of battery
   Widget batteryBuild(BatteryState state) {
-    return state == BatteryState.charging
-        ? SvgPicture.asset(
-            IconsSVG.chargingIcon,
-            width: 14,
-            height: 14,
-          )
-        : const SizedBox.shrink();
+    switch (state ){
+      case BatteryState.full:
+      case BatteryState.charging:
+        return SvgPicture.asset(
+          IconsSVG.chargingIcon,
+          width: 14,
+          height: 14,
+        );
+      case BatteryState.discharging:
+      case BatteryState.unknown:
+        return const SizedBox.shrink();
+    }
   }
 }
