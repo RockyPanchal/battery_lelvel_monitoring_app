@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:batter_level_monitoring_app/data/shared_preferences/shared_preference_controller.dart';
 import 'package:battery_plus/battery_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 import 'app/battery_leve_monitoring_app.dart';
 import 'features/battery_info_screen/controller/battery_display_controller.dart';
@@ -66,7 +67,8 @@ void callbackDispatcher() {
       case backgroundTaskName:
         printLog("$backgroundTaskName was executed");
 
-        var data = await SharedPreferencesController.getDataFromKey(dataKey: SharedPreferencesController.batterInfoData);
+        var prefs = await SharedPreferences.getInstance();
+        var data = prefs.get(SharedPreferencesController.batterInfoData);
 
         List<BatteryInfoModel> tempDataList = [];
 
@@ -84,7 +86,7 @@ void callbackDispatcher() {
         tempDataList.add(batteryInfoData);
 
         String dataString = jsonEncode(tempDataList);
-        await SharedPreferencesController.setStringData(dataKey: SharedPreferencesController.batterInfoData,dataValue: dataString);
+        prefs.setString(SharedPreferencesController.batterInfoData, dataString);
 
         //to send data main thread
         final sendPort = IsolateNameServer.lookupPortByName(backgroundTaskName);
@@ -98,7 +100,8 @@ void callbackDispatcher() {
       case Workmanager.iOSBackgroundTask:
         printLog("The iOS background fetch was triggered");
 
-        var data = await SharedPreferencesController.getDataFromKey(dataKey: SharedPreferencesController.batterInfoData);
+        var prefs = await SharedPreferences.getInstance();
+        var data = prefs.get(SharedPreferencesController.batterInfoData);
 
         List<BatteryInfoModel> tempDataList = [];
 
@@ -118,7 +121,8 @@ void callbackDispatcher() {
         tempDataList.add(batteryInfoData);
 
         String dataString = jsonEncode(tempDataList);
-        await SharedPreferencesController.setStringData(dataKey: SharedPreferencesController.batterInfoData,dataValue: dataString);
+        prefs.setString(SharedPreferencesController.batterInfoData, dataString);
+
 
         //to send data main thread
         final sendPort = IsolateNameServer.lookupPortByName(backgroundTaskName);
