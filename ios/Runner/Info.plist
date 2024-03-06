@@ -6,10 +6,6 @@
 	<array>
 		<string>com.example.batteryLevelMonitoringApp.battery_data_fetch</string>
 	</array>
-	<key>NSHumanReadableCopyright</key>
-	<string></string>
-	<key>CFBundleGetInfoString</key>
-	<string></string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -18,6 +14,8 @@
 	<string>Battery Level Monitoring App</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleGetInfoString</key>
+	<string></string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -34,6 +32,8 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSHumanReadableCopyright</key>
+	<string></string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
